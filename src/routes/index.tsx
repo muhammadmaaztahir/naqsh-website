@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, Copy, Menu, Plus, UploadCloud, X } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Menu, Plus, UploadCloud, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/naqsh-logo.png.asset.json";
 import hero from "@/assets/naqsh-01.jpg.asset.json";
@@ -119,14 +119,14 @@ function Home() {
     </header>
 
     <main id="top">
-      <section className="relative isolate flex min-h-[610px] items-center overflow-hidden bg-foreground text-overlay-foreground md:min-h-[690px] lg:min-h-[720px]">
+      <section className="relative isolate flex min-h-[650px] items-center overflow-hidden bg-foreground text-overlay-foreground md:min-h-[690px] lg:min-h-[720px]">
         <img src={hero.url} alt="Fashion editorial portrait in an embroidered statement outfit" className="hero-image absolute inset-0 -z-20 h-full w-full object-cover object-[58%_center]" />
         <div className="hero-overlay absolute inset-0 -z-10" />
-        <div className="mx-auto w-full max-w-[1440px] px-6 py-24 md:px-14 xl:px-24">
-          <p className="mb-8 text-[10px] font-semibold tracking-[.3em] text-primary">✦ &nbsp; NAQSH CUSTOMIZE CLOTHING &nbsp; ✦</p>
-          <h1 className="display max-w-[850px] text-[clamp(4.5rem,9vw,9.5rem)] leading-[.96] font-normal">YOU DESIGN.<br/><span className="italic text-primary">WE CREATE.</span></h1>
+        <div className="mx-auto w-full max-w-[1440px] px-6 py-14 md:px-14 md:py-24 xl:px-24">
+          <p className="mb-6 text-[10px] font-semibold tracking-[.3em] text-primary md:mb-8">✦ &nbsp; NAQSH CUSTOMIZE CLOTHING &nbsp; ✦</p>
+          <h1 className="display max-w-[850px] text-[3.35rem] leading-[.96] font-normal md:text-[clamp(4.5rem,9vw,9.5rem)]">YOU DESIGN.<br/><span className="italic text-primary">WE CREATE.</span></h1>
           <p className="mt-8 max-w-[470px] text-sm leading-8 text-overlay-foreground/85 md:text-base">Clothing, exactly the way you imagine it. Choose every detail — or show us your idea and let your vision take shape.</p>
-          <div className="mt-10 flex flex-wrap gap-3"><Button onClick={() => scrollTo("design")} className="h-12 rounded-none px-8 text-[10px] font-semibold tracking-[.18em] shadow-none">START DESIGNING <ArrowUpRight size={15}/></Button><Button onClick={() => scrollTo("process")} variant="outline" className="h-12 rounded-none border-overlay-foreground/65 bg-transparent px-8 text-[10px] font-semibold tracking-[.18em] text-overlay-foreground shadow-none hover:bg-overlay-foreground hover:text-foreground">HOW IT WORKS <ArrowDown size={14}/></Button></div>
+          <div className="mt-8 flex flex-wrap gap-3 md:mt-10"><Button onClick={() => scrollTo("design")} className="h-12 rounded-none px-6 text-[10px] font-semibold tracking-[.18em] shadow-none md:px-8">START DESIGNING <ArrowUpRight size={15}/></Button><Button onClick={() => scrollTo("process")} variant="outline" className="h-12 rounded-none border-overlay-foreground/65 bg-transparent px-6 text-[10px] font-semibold tracking-[.18em] text-overlay-foreground shadow-none hover:bg-overlay-foreground hover:text-foreground md:px-8">HOW IT WORKS <ArrowDown size={14}/></Button></div>
         </div>
         <div className="absolute bottom-8 right-8 hidden items-center gap-3 text-[9px] tracking-[.18em] md:flex">SCROLL TO EXPLORE <ArrowDown size={14}/></div>
       </section>
