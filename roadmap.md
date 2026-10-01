@@ -1,0 +1,4 @@
+- [ ] Consolidate garment, fabric, detail, fit, and inspiration choices into one step-by-step design studio.
+- [ ] Refine navigation, typography, proportions, and hero image transitions against the supplied reference.
+- [ ] Add relevant editorial content and correct footer logo, menu orientation, and Digitalyze credit.
+- [ ] Verify desktop and mobile interactions and visual layout.
