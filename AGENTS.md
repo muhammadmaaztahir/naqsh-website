@@ -11,3 +11,4 @@
 
 - Keep the Naqsh experience on the home route as a client-side design studio; selections stay local until the visitor copies their design, because no verified order endpoint or contact destination has been provided.
 - Store uploaded brand and reference media as Lovable Assets pointers; this keeps original image binaries out of source control while preserving the requested photography.
+- Keep all design choices in one home-page stepper, with editorial sections outside it; this prevents visitors from navigating several separate selection sections.
