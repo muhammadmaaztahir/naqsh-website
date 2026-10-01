@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep the Naqsh experience on the home route as a client-side design studio; selections stay local until the visitor copies their design, because no verified order endpoint or contact destination has been provided.
+- Store uploaded brand and reference media as Lovable Assets pointers; this keeps original image binaries out of source control while preserving the requested photography.
