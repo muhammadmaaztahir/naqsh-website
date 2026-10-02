@@ -48,7 +48,7 @@
   --destructive: oklch(0.55 0.17 28);
   --ink-soft: oklch(0.38 0.016 70);
   --overlay-foreground: oklch(0.98 0.006 75);
-  --hero-shadow: oklch(0.13 0.019 65 / 69%);
+  --hero-shadow: oklch(0.13 0.019 65 / 82%);
 }
 
 html { scroll-behavior: smooth; }
@@ -59,31 +59,157 @@ button { cursor: pointer; }
 .display { font-family: "Playfair Display", Georgia, serif; }
 .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: var(--primary); }
 .section-title { font-family: "Playfair Display", Georgia, serif; font-size: clamp(2.5rem, 4vw, 4.25rem); line-height: 1.15; font-weight: 400; }
-.hero-overlay { background: linear-gradient(90deg, var(--hero-shadow) 0%, oklch(0.13 0.019 65 / 35%) 56%, oklch(0.13 0.019 65 / 15%) 100%); }
-.hero-image { animation: slow-zoom 18s ease-in-out infinite alternate; }
-.fashion-image { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+
+/* ── NAV ──────────────────────────────────────────────────── */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+/* ── HERO ─────────────────────────────────────────────────── */
+/* More dramatic dark overlay — left-to-center strong, right side also darker */
+.hero-overlay-dark {
+  background: linear-gradient(
+    160deg,
+    oklch(0.08 0.01 65 / 88%) 0%,
+    oklch(0.1 0.015 65 / 75%) 40%,
+    oklch(0.1 0.015 65 / 60%) 70%,
+    oklch(0.08 0.01 65 / 50%) 100%
+  );
+}
+
+/* Hero slides: smooth Ken Burns cross-fade with alternating zoom direction */
+/* Base: hidden with opacity transition for cross-fade */
+.hero-slide {
+  opacity: 0;
+  transition: opacity 2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.hero-slide-active {
+  opacity: 1;
+  z-index: -20;
+}
+
+.hero-slide-exit {
+  opacity: 0;
+  z-index: -25;
+}
+
+.hero-slide-hidden {
+  opacity: 0;
+  z-index: -30;
+  animation: none !important;
+}
+
+/* 
+  Target BOTH active and exit states for data-zoom="in" and data-zoom="out".
+  Because both classes share the exact same animation property, transitioning 
+  from hero-slide-active to hero-slide-exit does NOT interrupt or reset 
+  the ongoing scale keyframes! The image keeps zooming smoothly as it fades out.
+*/
+.hero-slide-active[data-zoom="in"],
+.hero-slide-exit[data-zoom="in"] {
+  animation: hero-zoom-in 9.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.hero-slide-active[data-zoom="out"],
+.hero-slide-exit[data-zoom="out"] {
+  animation: hero-zoom-out 9.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Alternating Ken Burns keyframes */
+@keyframes hero-zoom-in {
+  0%   { transform: scale(1.0); }
+  100% { transform: scale(1.18); }
+}
+@keyframes hero-zoom-out {
+  0%   { transform: scale(1.18); }
+  100% { transform: scale(1.0); }
+}
+
+/* Dot indicators */
+.hero-dot {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: oklch(0.98 0.006 75 / 40%);
+  border-radius: 2px;
+  transition: width 0.4s ease, background 0.4s ease;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+.hero-dot-active {
+  width: 40px;
+  background: var(--primary);
+}
+
+/* ── DESIGN STUDIO ────────────────────────────────────────── */
+.fashion-image { transition: transform .85s cubic-bezier(.2,.7,.2,1); }
 .group:hover .fashion-image { transform: scale(1.055); }
 .reveal-line { width: 46px; height: 1px; background: var(--primary); }
-@keyframes slow-zoom { from { transform: scale(1); } to { transform: scale(1.065); } }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .hero-image { animation: none; } .fashion-image { transition: none; } }
-.fabric-swatch { position: relative; background-size: cover; }
-.fabric-swatch::after { content: ""; position: absolute; inset: 0; opacity: .42; background-image: repeating-linear-gradient(100deg, transparent 0 2px, oklch(1 0 0 / 30%) 2px 3px, transparent 3px 6px), repeating-linear-gradient(0deg, transparent 0 3px, oklch(0.2 0 0 / 14%) 3px 4px); }
-.fabric-cotton { background: oklch(.9 .02 80); }
-.fabric-linen { background: oklch(.78 .05 76); }
-.fabric-silk { background: linear-gradient(135deg, oklch(.51 .08 40), oklch(.81 .11 50), oklch(.54 .09 43)); }
-.fabric-chiffon { background: linear-gradient(125deg, oklch(.85 .04 320), oklch(.96 .02 320), oklch(.83 .04 320)); }
-.fabric-velvet { background: linear-gradient(115deg, oklch(.23 .06 20), oklch(.42 .1 20), oklch(.23 .06 20)); }
-.fabric-lawn { background: oklch(.85 .04 145); }
-.fabric-georgette { background: linear-gradient(145deg, oklch(.7 .045 230), oklch(.89 .025 230)); }
-.fabric-wool { background: oklch(.63 .03 75); }
-.fabric-denim { background: oklch(.42 .07 250); }
-.fabric-custom { background: linear-gradient(120deg, oklch(.83 .035 75) 25%, oklch(.7 .07 15) 25% 50%, oklch(.67 .07 155) 50% 75%, oklch(.53 .06 250) 75%); }
 
-/* Editorial hero transitions and step changes */
-.hero-slide { opacity: 0; transition: opacity 1.45s ease-in-out; }
-.hero-slide-active { opacity: 1; animation: hero-drift 7.3s ease-out both; }
-.hero-slide-hidden { opacity: 0; }
-@keyframes hero-drift { from { transform: scale(1.015); } to { transform: scale(1.14); } }
-.studio-panel { animation: studio-enter .38s ease-out both; }
-@keyframes studio-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-@media (prefers-reduced-motion: reduce) { .hero-slide { transition: none; } .hero-slide-active, .studio-panel { animation: none; } }
+.fabric-swatch { position: relative; background-size: cover; }
+.fabric-swatch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .42;
+  background-image:
+    repeating-linear-gradient(100deg, transparent 0 2px, oklch(1 0 0 / 30%) 2px 3px, transparent 3px 6px),
+    repeating-linear-gradient(0deg, transparent 0 3px, oklch(0.2 0 0 / 14%) 3px 4px);
+}
+.fabric-cotton   { background: oklch(.9 .02 80); }
+.fabric-linen    { background: oklch(.78 .05 76); }
+.fabric-silk     { background: linear-gradient(135deg, oklch(.51 .08 40), oklch(.81 .11 50), oklch(.54 .09 43)); }
+.fabric-chiffon  { background: linear-gradient(125deg, oklch(.85 .04 320), oklch(.96 .02 320), oklch(.83 .04 320)); }
+.fabric-velvet   { background: linear-gradient(115deg, oklch(.23 .06 20), oklch(.42 .1 20), oklch(.23 .06 20)); }
+.fabric-lawn     { background: oklch(.85 .04 145); }
+.fabric-georgette{ background: linear-gradient(145deg, oklch(.7 .045 230), oklch(.89 .025 230)); }
+.fabric-wool     { background: oklch(.63 .03 75); }
+.fabric-denim    { background: oklch(.42 .07 250); }
+.fabric-custom   { background: linear-gradient(120deg, oklch(.83 .035 75) 25%, oklch(.7 .07 15) 25% 50%, oklch(.67 .07 155) 50% 75%, oklch(.53 .06 250) 75%); }
+
+
+/* Studio panel entrance */
+.studio-panel { animation: studio-enter .42s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes studio-enter {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Step circle focus */
+.step-circle:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+/* WhatsApp floating widget — subtle attract bounce after 3s */
+.whatsapp-widget {
+  animation: wa-attract 2.8s ease-in-out 3s 2;
+}
+@keyframes wa-attract {
+  0%, 100% { transform: scale(1) translateY(0); }
+  35%       { transform: scale(1.12) translateY(-7px); }
+  58%       { transform: scale(1.05) translateY(-3px); }
+}
+
+/* ── REDUCED MOTION ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero-slide, .hero-slide-exit { transition: opacity 0.4s; }
+  .hero-slide-active[data-zoom="in"],
+  .hero-slide-active[data-zoom="out"],
+  .hero-slide-exit[data-zoom="in"],
+  .hero-slide-exit[data-zoom="out"] { animation: none; }
+  .fashion-image   { transition: none; }
+  .studio-panel    { animation: none; }
+  .hero-dot        { transition: none; }
+  .whatsapp-widget { animation: none; }
+}
