@@ -21,9 +21,9 @@ import heroThree from "@/assets/Images/banner_3.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "NAQSH — Custom Clothing, Designed by You" },
+      { title: "NAQSH — Custom Clothing, Designed for You" },
       { name: "description", content: "You design it. We make it. Create clothing your way in the NAQSH custom design studio." },
-      { property: "og:title", content: "NAQSH — Custom Clothing, Designed by You" },
+      { property: "og:title", content: "NAQSH — Custom Clothing, Designed for You" },
       { property: "og:description", content: "Create clothing your way in the NAQSH custom design studio." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
