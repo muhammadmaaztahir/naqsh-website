@@ -125,6 +125,12 @@ function Home() {
   const [idea, setIdea] = useState("");
   const [fileName, setFileName] = useState("");
   const [filePreview, setFilePreview] = useState("");
+  const [fileObj, setFileObj] = useState<File | null>(null);
+  const [contactName, setContactName] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sendStatus, setSendStatus] = useState<"idle" | "sent" | "error" | "invalid">("idle");
   const [step, setStep] = useState(0);
   const [heroIndex, setHeroIndex] = useState(0);
   const [prevHeroIndex, setPrevHeroIndex] = useState<number | null>(null);
@@ -163,7 +169,30 @@ function Home() {
   const onFile = (file?: File) => {
     if (!file) return;
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 10 * 1024 * 1024) { window.alert("Please choose a JPG, PNG or WebP image under 10 MB."); return; }
-    setFileName(file.name); setFilePreview(URL.createObjectURL(file));
+    setFileName(file.name); setFileObj(file); setFilePreview(URL.createObjectURL(file));
+  };
+  const sendDesign = async () => {
+    if (!contactName.trim() || !contactPhone.trim()) { setSendStatus("invalid"); return; }
+    setSending(true); setSendStatus("idle");
+    const build = (withFile: boolean) => {
+      const data = new FormData();
+      data.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY ?? "");
+      data.append("subject", `New NAQSH design request — ${activeGarment} from ${contactName.trim()}`);
+      data.append("from_name", "NAQSH Website");
+      data.append("name", contactName.trim());
+      data.append("phone", contactPhone.trim());
+      if (contactEmail.trim()) data.append("email", contactEmail.trim());
+      data.append("message", `${summary}\n\nCustomer: ${contactName.trim()}\nPhone: ${contactPhone.trim()}\nEmail: ${contactEmail.trim() || "Not provided"}`);
+      if (withFile && fileObj) data.append("attachment", fileObj);
+      return data;
+    };
+    const post = async (withFile: boolean) => { const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: build(withFile) }); const json = await res.json().catch(() => ({ success: false })); return Boolean(json.success); };
+    try {
+      let ok = await post(true);
+      if (!ok && fileObj) ok = await post(false);
+      setSendStatus(ok ? "sent" : "error");
+    } catch { setSendStatus("error"); }
+    setSending(false);
   };
   const nav = [["HOW IT WORKS", "process"], ["THE ATELIER", "atelier"], ["GALLERY", "gallery"], ["DESIGN STUDIO", "design"]];
 
@@ -358,7 +387,7 @@ function Home() {
 
             {step === 4 && <div className="mx-auto max-w-[820px]"><div className="mx-auto flex max-w-sm border border-border p-1"><Button variant="ghost" onClick={() => setSizeMode("standard")} aria-pressed={sizeMode === "standard"} className={`h-10 flex-1 rounded-sm text-xs shadow-none ${sizeMode === "standard" ? "bg-foreground text-background hover:bg-foreground/90 hover:text-background" : "hover:bg-card"}`}>Standard size</Button><Button variant="ghost" onClick={() => setSizeMode("measurements")} aria-pressed={sizeMode === "measurements"} className={`h-10 flex-1 rounded-sm text-xs shadow-none ${sizeMode === "measurements" ? "bg-foreground text-background hover:bg-foreground/90 hover:text-background" : "hover:bg-card"}`}>My measurements</Button></div>{sizeMode === "standard" ? <div className="mt-8 flex flex-wrap justify-center gap-2">{["XS", "S", "M", "L", "XL", "XXL", "Custom"].map(s => <Button key={s} variant="outline" onClick={() => { setSize(s); if (s === "Custom") setSizeMode("measurements"); }} aria-pressed={size === s} className={`h-12 min-w-14 rounded-sm text-xs shadow-none ${size === s ? "border-primary bg-primary text-primary-foreground hover:bg-primary/90" : "border-border bg-transparent hover:bg-card"}`}>{s}</Button>)}</div> : <div className="mt-7 grid gap-4 sm:grid-cols-2 md:grid-cols-3">{measurements.map(label => <label key={label} className="block"><span className="mb-2 block text-[10px] font-semibold uppercase tracking-[.1em]">{label}</span><div className="flex items-center border border-border bg-card focus-within:border-primary"><input type="number" min="0" max="200" step="0.1" inputMode="decimal" value={measurementsValue[label] || ""} onChange={e => setMeasurementsValue({ ...measurementsValue, [label]: e.target.value })} placeholder="0" className="w-full bg-transparent px-4 py-3 text-sm outline-none" /><span className="pr-4 text-xs text-muted-foreground">in</span></div></label>)}</div>}</div>}
 
-            {step === 5 && <div className="mx-auto max-w-[650px] border-y border-border py-6"><div className="grid gap-4 sm:grid-cols-2">{[["GARMENT", activeGarment], ["FABRIC", activeFabric], ["COLOR", customColor || activeColor], ["FIT", sizeMode === "standard" ? size : "Custom measurements"], ["REFERENCE", fileName || "Not added"], ["DETAILS", Object.values(parts).join(", ") || "Your choice"]].map(([label, value]) => <div key={label}><span className="text-[10px] font-semibold tracking-[.14em] text-primary">{label}</span><p className="display mt-1 break-words text-lg">{value}</p></div>)}</div>{idea && <div className="mt-5 border-t border-border pt-5"><span className="text-[10px] font-semibold tracking-[.14em] text-primary">YOUR IDEA</span><p className="mt-2 text-sm leading-6">{idea}</p></div>}<div className="mt-7"><Button onClick={copySummary} className="h-11 w-full rounded-sm px-6 text-[11px] font-semibold tracking-[.12em] shadow-none sm:w-auto">{copied ? <><Check size={16} /> DESIGN DETAILS COPIED</> : <><Copy size={16} /> COPY MY DESIGN DETAILS</>}</Button><p className="mt-3 text-[11px] leading-5 text-muted-foreground">Your design stays on this page until you copy it. If you added a reference image, attach it separately when sharing.</p>{copyError && <p role="alert" className="mt-2 text-xs text-destructive">Couldn't copy automatically. Please check clipboard permissions and try again.</p>}</div></div>}
+            {step === 5 && <div className="mx-auto max-w-[650px] border-y border-border py-6"><div className="grid gap-4 sm:grid-cols-2">{[["GARMENT", activeGarment], ["FABRIC", activeFabric], ["COLOR", customColor || activeColor], ["FIT", sizeMode === "standard" ? size : "Custom measurements"], ["REFERENCE", fileName || "Not added"], ["DETAILS", Object.values(parts).join(", ") || "Your choice"]].map(([label, value]) => <div key={label}><span className="text-[10px] font-semibold tracking-[.14em] text-primary">{label}</span><p className="display mt-1 break-words text-lg">{value}</p></div>)}</div>{idea && <div className="mt-5 border-t border-border pt-5"><span className="text-[10px] font-semibold tracking-[.14em] text-primary">YOUR IDEA</span><p className="mt-2 text-sm leading-6">{idea}</p></div>}<div className="mt-7"><div className="grid gap-4 sm:grid-cols-2"><label className="block"><span className="mb-2 block text-[10px] font-semibold uppercase tracking-[.1em]">Your name *</span><input id="contact-name" value={contactName} onChange={e => setContactName(e.target.value)} autoComplete="name" className="w-full border border-border bg-card px-4 py-3 text-sm outline-none focus:border-primary" /></label><label className="block"><span className="mb-2 block text-[10px] font-semibold uppercase tracking-[.1em]">Phone / WhatsApp *</span><input id="contact-phone" type="tel" value={contactPhone} onChange={e => setContactPhone(e.target.value)} autoComplete="tel" className="w-full border border-border bg-card px-4 py-3 text-sm outline-none focus:border-primary" /></label><label className="block sm:col-span-2"><span className="mb-2 block text-[10px] font-semibold uppercase tracking-[.1em]">Email (optional)</span><input id="contact-email" type="email" value={contactEmail} onChange={e => setContactEmail(e.target.value)} autoComplete="email" className="w-full border border-border bg-card px-4 py-3 text-sm outline-none focus:border-primary" /></label></div><Button id="send-design" onClick={sendDesign} disabled={sending || sendStatus === "sent"} className="mt-5 h-11 w-full rounded-sm px-6 text-[11px] font-semibold tracking-[.12em] shadow-none sm:w-auto">{sending ? "SENDING..." : sendStatus === "sent" ? <><Check size={16} /> SENT TO NAQSH</> : <>SEND MY DESIGN TO NAQSH <ArrowUpRight size={16} /></>}</Button>{sendStatus === "sent" && <p className="mt-3 text-xs text-primary">Thank you! Your design has been sent. We'll contact you soon.</p>}{sendStatus === "invalid" && <p role="alert" className="mt-3 text-xs text-destructive">Please enter your name and phone number.</p>}{sendStatus === "error" && <p role="alert" className="mt-3 text-xs text-destructive">Couldn't send right now. Please try again, or copy your details below.</p>}<Button variant="outline" onClick={copySummary} className="mt-3 h-11 w-full rounded-sm px-6 text-[11px] font-semibold tracking-[.12em] shadow-none sm:w-auto sm:ml-3">{copied ? <><Check size={16} /> DESIGN DETAILS COPIED</> : <><Copy size={16} /> COPY MY DESIGN DETAILS</>}</Button><p className="mt-3 text-[11px] leading-5 text-muted-foreground">Prefer to share it yourself? Copy your design details instead.</p>{copyError && <p role="alert" className="mt-2 text-xs text-destructive">Couldn't copy automatically. Please check clipboard permissions and try again.</p>}</div></div>}
           </div>
 
           {/* Navigation buttons */}
