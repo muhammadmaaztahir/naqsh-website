@@ -17,6 +17,25 @@ import studio from "@/assets/Images/studio.jpg";
 import detail from "@/assets/Images/IMG_1203.jpeg";
 import heroTwo from "@/assets/Images/banner_2.jpg";
 import heroThree from "@/assets/Images/banner_3.jpg";
+import img1209 from "@/assets/Images/IMG_1209.jpeg";
+import img1211 from "@/assets/Images/IMG_1211.jpeg";
+import img1212 from "@/assets/Images/IMG_1212.jpeg";
+import img1130 from "@/assets/Images/IMG_1130.jpeg";
+import img1213 from "@/assets/Images/IMG_1213.jpeg";
+import img1214 from "@/assets/Images/IMG_1214.jpeg";
+import img1217 from "@/assets/Images/IMG_1217.jpeg";
+import img1241 from "@/assets/Images/IMG_1241.jpeg";
+import img1267 from "@/assets/Images/IMG_1267.jpeg";
+import img1268 from "@/assets/Images/IMG_1268.jpeg";
+import img1111 from "@/assets/Images/IMG_1111.jpeg";
+import imgA from "@/assets/Images/67027223-012e-4a37-8f52-650c9e681b68.jpeg";
+import imgB from "@/assets/Images/6C14CE92-4BE2-4655-B9C2-17D6034946BA.jpeg";
+import imgC from "@/assets/Images/8978fbfb-6430-4368-ad4a-53feac71d24d.jpeg";
+import imgD from "@/assets/Images/923ea2e2-8b22-45c6-816e-3d45a66fb91f.jpeg";
+import imgE from "@/assets/Images/B738FC74-6CBE-433F-8B28-5E4AFA596784.jpeg";
+import imgF from "@/assets/Images/CB99450B-FC9B-49A5-A5E7-96E8A89C1764.jpeg";
+import imgG from "@/assets/Images/ba0dab23-424a-4a88-800d-735f3285f365.jpeg";
+import imgH from "@/assets/Images/d69dbcba-b43b-4015-b479-d9245103ee81.jpeg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,13 +62,21 @@ const garments = [
   { name: "Shirt", image: shirt }, { name: "Jacket", image: jacket },
   { name: "Pants", image: denim }, { name: "Custom Outfit", image: studio },
 ];
-const gallery = [
-  { name: "The Evening Edit", category: "DRESS", image: heroImg },
-  { name: "Modern Tradition", category: "KURTA", image: shalwar },
-  { name: "Understated Elegance", category: "ABAYA", image: abayaTwo },
-  { name: "A New Perspective", category: "JACKET", image: jacket },
-  { name: "Everyday, Reimagined", category: "KURTA", image: kurta },
+const galleryCategories = garments.map(g => g.name).filter(name => name !== "Custom Outfit");
+const galleryLayouts = [
+  ["col-span-2 row-span-2", "row-span-2", "", ""],
+  ["row-span-2", "md:col-span-2", "md:row-span-2", "col-span-2"],
 ];
+const galleryImages: Record<string, string[]> = {
+  "Dress": [dress, img1209, img1211, img1212],
+  "Kurta": [kurta, img1130, img1213, img1214],
+  "Shalwar Kameez": [shalwar, img1217, img1241, img1111],
+  "Abaya": [abaya, abayaTwo, img1267, imgA],
+  "Shirt": [shirt, img1268, imgB, imgC],
+  "Jacket": [jacket, imgD, imgE, imgF],
+  "Pants": [denim, imgG, imgH, detail],
+};
+const gallery = Object.entries(galleryImages).flatMap(([category, images]) => images.map(image => ({ category, image })));
 const fabrics = [
   { name: "Cotton", note: "Soft & breathable", color: "fabric-cotton" },
   { name: "Linen", note: "Naturally textured", color: "fabric-linen" },
@@ -101,12 +128,11 @@ function Home() {
   const [step, setStep] = useState(0);
   const [heroIndex, setHeroIndex] = useState(0);
   const [prevHeroIndex, setPrevHeroIndex] = useState<number | null>(null);
-  const [galleryIndex, setGalleryIndex] = useState(0);
+  const [galleryTab, setGalleryTab] = useState(galleryCategories[0]);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
-  const galleryRef = useRef<HTMLDivElement>(null);
   const studioRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => () => { if (filePreview) URL.revokeObjectURL(filePreview); }, [filePreview]);
@@ -125,7 +151,7 @@ function Home() {
     setStep(Math.max(0, Math.min(steps.length - 1, next)));
     studioRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
-  const slide = (direction: number) => { const next = (galleryIndex + direction + gallery.length) % gallery.length; setGalleryIndex(next); galleryRef.current?.children[next]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" }); };
+  const galleryItems = gallery.filter(item => item.category === galleryTab);
   const summary = [
     "NAQSH — MY CUSTOM DESIGN", "", `Garment: ${activeGarment}`, `Fabric: ${activeFabric}`,
     `Main color: ${customColor || activeColor}`, ...Object.entries(parts).map(([key, value]) => `${key}: ${value}`),
@@ -361,33 +387,28 @@ function Home() {
       {/* ── GALLERY ───────────────────────────────────────────── */}
       <section id="gallery" className="scroll-mt-20 bg-card py-16 md:py-24">
         <div className="mx-auto max-w-[1200px] px-5 md:px-10">
-          <div className="flex items-end justify-between gap-6">
-            <div>
-              <p className="eyebrow">THE LOOKBOOK</p>
-              <h2 className="section-title mt-4">A little <em>inspiration.</em></h2>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="icon" aria-label="Previous look" onClick={() => slide(-1)} className="h-10 w-10 rounded-sm border-border bg-transparent shadow-none"><ArrowLeft size={17} /></Button>
-              <Button variant="outline" size="icon" aria-label="Next look" onClick={() => slide(1)} className="h-10 w-10 rounded-sm border-border bg-transparent shadow-none"><ArrowRight size={17} /></Button>
-            </div>
+          <div className="text-center">
+            <p className="eyebrow">THE LOOKBOOK</p>
+            <h2 className="section-title mt-4">A little <em>inspiration.</em></h2>
           </div>
-          <div ref={galleryRef} className="mt-9 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {gallery.map(item => <div key={item.name} className="group min-w-[75%] snap-start sm:min-w-[45%] lg:min-w-[31%]">
-              <div className="aspect-[3/4] overflow-hidden bg-muted">
-                <img src={item.image} alt={item.name} loading="lazy" className="fashion-image h-full w-full object-cover" />
-              </div>
-              <div className="mt-4 flex items-end justify-between">
-                <div>
-                  <span className="eyebrow">{item.category}</span>
-                  <h3 className="display mt-1 text-xl">{item.name}</h3>
-                </div>
-                <ArrowUpRight className="text-primary" size={20} />
-              </div>
-            </div>)}
+          <div role="tablist" aria-label="Gallery categories" className="mt-9 flex flex-wrap justify-center gap-x-5 gap-y-2 border-b border-border">
+            {galleryCategories.map(cat => (
+              <button key={cat} id={`gallery-tab-${cat}`} role="tab" aria-selected={galleryTab === cat} onClick={() => setGalleryTab(cat)}
+                className={`relative px-1 pb-3 text-[10px] font-medium uppercase tracking-[0.16em] transition-colors after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:origin-left after:bg-primary after:transition-transform after:duration-300 ${galleryTab === cat ? "text-primary after:scale-x-100" : "text-muted-foreground after:scale-x-0 hover:text-foreground"}`}>
+                {cat}
+              </button>
+            ))}
           </div>
-          <div className="mt-5 flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">0{galleryIndex + 1} / 0{gallery.length}</span>
-            <div className="flex gap-1">{gallery.map((item, i) => <Button key={item.name} variant="ghost" aria-label={`Show look ${i + 1}`} onClick={() => { setGalleryIndex(i); galleryRef.current?.children[i]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" }); }} className={`h-1.5 rounded-none p-0 shadow-none ${galleryIndex === i ? "w-7 bg-primary hover:bg-primary" : "w-3 bg-border hover:bg-primary"}`} />)}</div>
+          <div key={galleryTab} role="tabpanel" className="mt-10 grid auto-rows-[150px] grid-flow-dense grid-cols-2 gap-2 sm:auto-rows-[190px] md:auto-rows-[210px] md:grid-cols-4 md:gap-3">
+            {galleryItems.map((item, i) => (
+              <figure key={item.image} className={`group relative overflow-hidden bg-muted animate-in fade-in zoom-in-95 duration-500 ${galleryLayouts[galleryCategories.indexOf(galleryTab) % 2][i]}`} style={{ animationDelay: `${i * 70}ms`, animationFillMode: "backwards" }}>
+                <img src={item.image} alt={`${item.category} look ${i + 1}`} loading="lazy" className="fashion-image h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/60 to-transparent p-4 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <span className="text-[10px] uppercase tracking-[0.2em]">{item.category}</span>
+                  <ArrowUpRight size={18} />
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>
