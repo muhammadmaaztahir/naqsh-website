@@ -174,23 +174,32 @@ function Home() {
   const sendDesign = async () => {
     if (!contactName.trim() || !contactPhone.trim()) { setSendStatus("invalid"); return; }
     setSending(true); setSendStatus("idle");
-    const build = (withFile: boolean) => {
-      const data = new FormData();
-      data.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY ?? "");
-      data.append("subject", `New NAQSH design request — ${activeGarment} from ${contactName.trim()}`);
-      data.append("from_name", "NAQSH Website");
-      data.append("name", contactName.trim());
-      data.append("phone", contactPhone.trim());
-      if (contactEmail.trim()) data.append("email", contactEmail.trim());
-      data.append("message", `${summary}\n\nCustomer: ${contactName.trim()}\nPhone: ${contactPhone.trim()}\nEmail: ${contactEmail.trim() || "Not provided"}`);
-      if (withFile && fileObj) data.append("attachment", fileObj);
-      return data;
-    };
-    const post = async (withFile: boolean) => { const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: build(withFile) }); const json = await res.json().catch(() => ({ success: false })); return Boolean(json.success); };
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+    let imageUrl = "";
+    if (fileObj && cloudName && uploadPreset) {
+      try {
+        const upload = new FormData();
+        upload.append("file", fileObj);
+        upload.append("upload_preset", uploadPreset);
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { method: "POST", body: upload });
+        const json = await res.json();
+        if (json.secure_url) imageUrl = json.secure_url;
+      } catch { /* fall back to sending without the link */ }
+    }
+    const data = new FormData();
+    data.append("access_key", import.meta.env.VITE_WEB3FORMS_KEY ?? "");
+    data.append("subject", `New NAQSH design request — ${activeGarment} from ${contactName.trim()}`);
+    data.append("from_name", "NAQSH Website");
+    data.append("name", contactName.trim());
+    data.append("phone", contactPhone.trim());
+    if (contactEmail.trim()) data.append("email", contactEmail.trim());
+    const message = summary.replace(/ \(attach separately\)$/m, imageUrl ? "" : " (upload failed — ask customer to resend)");
+    data.append("message", `${message}${imageUrl ? `\nReference image link: ${imageUrl}` : ""}\n\nCustomer: ${contactName.trim()}\nPhone: ${contactPhone.trim()}\nEmail: ${contactEmail.trim() || "Not provided"}`);
     try {
-      let ok = await post(true);
-      if (!ok && fileObj) ok = await post(false);
-      setSendStatus(ok ? "sent" : "error");
+      const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: data });
+      const json = await res.json().catch(() => ({ success: false }));
+      setSendStatus(json.success ? "sent" : "error");
     } catch { setSendStatus("error"); }
     setSending(false);
   };
