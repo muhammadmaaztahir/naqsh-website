@@ -4,38 +4,86 @@ import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Menu, Uplo
 import { Button } from "@/components/ui/button";
 
 // Direct local image imports — bypassing broken Lovable CDN asset.json files
-import heroImg from "@/assets/Images/banner_1.jpg";
-import dress from "@/assets/Images/IMG_1110.jpeg";
-import kurta from "@/assets/Images/IMG_1133.jpeg";
-import shalwar from "@/assets/Images/IMG_1128.jpeg";
-import abaya from "@/assets/Images/IMG_1141.jpeg";
-import abayaTwo from "@/assets/Images/IMG_1146.jpeg";
-import shirt from "@/assets/Images/IMG_1145.jpeg";
-import jacket from "@/assets/Images/IMG_1136.jpeg";
-import denim from "@/assets/Images/IMG_1205.jpeg";
-import studio from "@/assets/Images/studio.jpg";
+import heroImg from "@/assets/Images/New Images/3PELXS26V737_1.webp";
+import studio from "@/assets/Images/New Images/Cardinal_Gem_01.jpg.webp";
 import detail from "@/assets/Images/IMG_1203.jpeg";
 import heroTwo from "@/assets/Images/banner_2.jpg";
-import heroThree from "@/assets/Images/banner_3.jpg";
-import img1209 from "@/assets/Images/IMG_1209.jpeg";
-import img1211 from "@/assets/Images/IMG_1211.jpeg";
-import img1212 from "@/assets/Images/IMG_1212.jpeg";
-import img1130 from "@/assets/Images/IMG_1130.jpeg";
-import img1213 from "@/assets/Images/IMG_1213.jpeg";
-import img1214 from "@/assets/Images/IMG_1214.jpeg";
-import img1217 from "@/assets/Images/IMG_1217.jpeg";
-import img1241 from "@/assets/Images/IMG_1241.jpeg";
-import img1267 from "@/assets/Images/IMG_1267.jpeg";
-import img1268 from "@/assets/Images/IMG_1268.jpeg";
-import img1111 from "@/assets/Images/IMG_1111.jpeg";
-import imgA from "@/assets/Images/67027223-012e-4a37-8f52-650c9e681b68.jpeg";
-import imgB from "@/assets/Images/6C14CE92-4BE2-4655-B9C2-17D6034946BA.jpeg";
-import imgC from "@/assets/Images/8978fbfb-6430-4368-ad4a-53feac71d24d.jpeg";
-import imgD from "@/assets/Images/923ea2e2-8b22-45c6-816e-3d45a66fb91f.jpeg";
-import imgE from "@/assets/Images/B738FC74-6CBE-433F-8B28-5E4AFA596784.jpeg";
-import imgF from "@/assets/Images/CB99450B-FC9B-49A5-A5E7-96E8A89C1764.jpeg";
-import imgG from "@/assets/Images/ba0dab23-424a-4a88-800d-735f3285f365.jpeg";
-import imgH from "@/assets/Images/d69dbcba-b43b-4015-b479-d9245103ee81.jpeg";
+import heroThree from "@/assets/Images/New Images/U3PDYS26V797_2.jpg";
+
+// Categorized image imports from "New Images" folder
+// Dress (8 images)
+import dress01 from "@/assets/Images/New Images/Cardinal_Gem_01.jpg.webp";
+import dress02 from "@/assets/Images/New Images/Crown_04_03f701ed-5ece-45f2-b28c-dd5bc763274f.jpg.webp";
+import dress03 from "@/assets/Images/New Images/Rosalie_Crown_01.jpg.webp";
+import dress04 from "@/assets/Images/New Images/Sapphire_01_9148a504-576a-4c27-9f48-20f5fdde2d9d.jpg.webp";
+import dress05 from "@/assets/Images/New Images/923ea2e2-8b22-45c6-816e-3d45a66fb91f.jpeg";
+import dress06 from "@/assets/Images/New Images/3PELXS26V737_1.webp";
+import dress07 from "@/assets/Images/New Images/3PELXS26V836_1.webp";
+import dress08 from "@/assets/Images/New Images/U2DEDY26V910_2.webp";
+
+// Kurta (8 images)
+import kurta01 from "@/assets/Images/New Images/Maria b.webp";
+import kurta02 from "@/assets/Images/New Images/Maria b red.webp";
+import kurta03 from "@/assets/Images/New Images/U2TDDS26V924_3.webp";
+import kurta04 from "@/assets/Images/New Images/U2TDDS26V924_4.webp";
+import kurta05 from "@/assets/Images/New Images/U2TDDS26V924_6.webp";
+import kurta06 from "@/assets/Images/New Images/jss-25-368_1_e41d5c08-ab5b-4798-be9f-421cd492a757.webp";
+import kurta07 from "@/assets/Images/New Images/jss-25-371_1_69bc7531-c764-4259-af69-584840eedfec.jpg";
+import kurta08 from "@/assets/Images/New Images/jss-25-371_2_c8dcaa0c-f1b9-4e4f-a165-b2aab84385ff.jpg";
+
+// Shalwar Kameez (8 images)
+import shalwar01 from "@/assets/Images/New Images/embroidered-khaddi-net-suits-unstitched-3-piece-sunw6no025ut-festive-collection_1_685d9a1e-7df7-4c83-b409-752c619e9ef1_cc84509f-7fb7-4d04-a5e4-3b13a3b8ac0c.jpg.webp";
+import shalwar02 from "@/assets/Images/New Images/hemline-embroidered-raw-silk-suits-unstitched-3-piece-mq25nf-d-03-cynxa-festive-collection_1_a1d642a5-f3b7-4834-aecb-f887526c7db6.jpg.webp";
+import shalwar03 from "@/assets/Images/New Images/U3PDYS26V796_2.webp";
+import shalwar04 from "@/assets/Images/New Images/U3PDYS26V797_2.jpg";
+import shalwar05 from "@/assets/Images/New Images/U3PDYS26V798_2.webp";
+import shalwar06 from "@/assets/Images/New Images/IMG_1111.jpeg";
+import shalwar07 from "@/assets/Images/New Images/zell R.webp";
+import shalwar08 from "@/assets/Images/New Images/zell white.webp";
+
+// Abaya (8 images)
+import abaya01 from "@/assets/Images/New Images/abaya.webp";
+import abaya02 from "@/assets/Images/New Images/0DA9699D-28FF-4194-A613-4D1F9AFCCC9D.webp";
+import abaya03 from "@/assets/Images/New Images/WhatsApp_Image_2026-07-11_at_11.03.14_PM.webp";
+import abaya04 from "@/assets/Images/New Images/WhatsApp_Image_2026-07-11_at_4.01.48_AM.webp";
+import abaya05 from "@/assets/Images/New Images/WhatsApp_Image_2026-07-11_at_4.06.09_AM.webp";
+import abaya06 from "@/assets/Images/New Images/WhatsApp_Image_2026-07-11_at_4.27.39_PM_4.webp";
+import abaya07 from "@/assets/Images/New Images/WhatsApp_Image_2026-07-11_at_4.58.43_PM.webp";
+import abaya08 from "@/assets/Images/New Images/Whisk_9a89f20983918278bdf46e179a4ffbebdr-ig-square-1080-1080.webp";
+
+// Shirt (8 images)
+import shirt01 from "@/assets/Images/New Images/WTOP-26-0151-A_1.webp";
+import shirt02 from "@/assets/Images/New Images/WTOP-26-0152_2.webp";
+import shirt03 from "@/assets/Images/New Images/WTOP-26-0159-A_1.webp";
+import shirt04 from "@/assets/Images/New Images/WTOP-26-0161_2.webp";
+import shirt05 from "@/assets/Images/New Images/wtop-25-0001-a_1_9712ebad-ca90-4084-8e06-b9a4201a70fb.webp";
+import shirt06 from "@/assets/Images/New Images/wtop-25-0001-b_1_00f99c57-a69c-40fa-9b80-ada0507a09fa.webp";
+import shirt07 from "@/assets/Images/New Images/wtop-25-0055_1__1_dbfd6ff4-8576-45ab-810b-8d049f8e9dfa.webp";
+import shirt08 from "@/assets/Images/New Images/wtop-25-0060_2_111983fb-aea7-4cd1-bb46-40bdcbe76940.jpg";
+
+// Jacket (8 images)
+import jacket01 from "@/assets/Images/New Images/F0266201802.webp";
+import jacket02 from "@/assets/Images/New Images/F0266201802_b623fd52-2959-494b-940f-1255a07cec3d.webp";
+import jacket03 from "@/assets/Images/New Images/F0266201117.2_bcf14ff6-4e79-4ebe-9155-94d808cb0a78.webp";
+import jacket04 from "@/assets/Images/New Images/F0313201618._cda2a749-d6f4-4cda-9abd-5303989a6c71.webp";
+import jacket05 from "@/assets/Images/New Images/F0313201618.webp";
+import jacket06 from "@/assets/Images/New Images/F0357201903._45e6435a-a6f5-4e23-9a67-af1b4cfd3d48.webp";
+import jacket07 from "@/assets/Images/New Images/F0357201903 (1).webp";
+import jacket08 from "@/assets/Images/New Images/F0492201618-1.webp";
+
+// Pants (8 images)
+import pants01 from "@/assets/Images/New Images/WBOT-26-0095_1.webp";
+import pants02 from "@/assets/Images/New Images/WBOT-26-0095_3.webp";
+import pants03 from "@/assets/Images/New Images/007a_3_22c3af96-15b6-48ef-b5e2-1bd0ad6982af.webp";
+import pants04 from "@/assets/Images/New Images/007b_6_0629e165-f18c-42c3-a3c7-ea49767dbcc4.webp";
+import pants05 from "@/assets/Images/New Images/image00037_06015dcb-98b3-4041-b0e8-bfe413dca034.webp";
+import pants06 from "@/assets/Images/New Images/wbot-25-0007-c_2_6660e044-0af1-45d4-b15a-72228c18d37e.webp";
+import pants07 from "@/assets/Images/New Images/wbot-25-0009-a_1_4ba9ba93-41e3-4423-bfec-b93647045ba8.webp";
+import pants08 from "@/assets/Images/New Images/wbot-25-0023-c_1_67a8c1b9-ace0-4bf4-9c5e-acc95d24f80f.webp";
+
+// Custom Outfit
+import custom01 from "@/assets/Images/New Images/Maria b.webp";
+import custom02 from "@/assets/Images/New Images/ba0dab23-424a-4a88-800d-735f3285f365.jpeg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -57,24 +105,28 @@ const heroSlides = [
   { image: heroThree, alt: "Maroon printed outfit in a classic interior", position: "center 20%", zoom: "in" },
 ];
 const garments = [
-  { name: "Dress", image: dress }, { name: "Kurta", image: kurta },
-  { name: "Shalwar Kameez", image: shalwar }, { name: "Abaya", image: abaya },
-  { name: "Shirt", image: shirt }, { name: "Jacket", image: jacket },
-  { name: "Pants", image: denim }, { name: "Custom Outfit", image: studio },
+  { name: "Dress", image: dress01 }, { name: "Kurta", image: kurta01 },
+  { name: "Shalwar Kameez", image: shalwar01 }, { name: "Abaya", image: abaya01 },
+  { name: "Shirt", image: shirt01 }, { name: "Jacket", image: jacket01 },
+  { name: "Pants", image: pants01 }, { name: "Custom Outfit", image: custom01 },
 ];
 const galleryCategories = garments.map(g => g.name).filter(name => name !== "Custom Outfit");
 const galleryLayouts = [
-  ["col-span-2 row-span-2", "row-span-2", "", ""],
-  ["row-span-2", "md:col-span-2", "md:row-span-2", "col-span-2"],
+  // Layout 0: Big feature 2x2 on left, tall portrait, 2 stacked, 4 bottom
+  ["col-span-2 row-span-2", "row-span-2", "", "", "", "", "", ""],
+  // Layout 1: Symmetric tall-left, wide-top/bottom middle, tall-right, 4 bottom (Abaya look)
+  ["row-span-2", "md:col-span-2", "md:row-span-2", "col-span-2", "", "", "", ""],
+  // Layout 2: Tall portrait, 2 stacked, Big feature 2x2 on right, 4 bottom
+  ["", "row-span-2", "col-span-2 row-span-2", "", "", "", "", ""],
 ];
 const galleryImages: Record<string, string[]> = {
-  "Dress": [dress, img1209, img1211, img1212],
-  "Kurta": [kurta, img1130, img1213, img1214],
-  "Shalwar Kameez": [shalwar, img1217, img1241, img1111],
-  "Abaya": [abaya, abayaTwo, img1267, imgA],
-  "Shirt": [shirt, img1268, imgB, imgC],
-  "Jacket": [jacket, imgD, imgE, imgF],
-  "Pants": [denim, imgG, imgH, detail],
+  "Dress": [dress01, dress02, dress03, dress04, dress05, dress06, dress07, dress08],
+  "Kurta": [kurta01, kurta02, kurta03, kurta04, kurta05, kurta06, kurta07, kurta08],
+  "Shalwar Kameez": [shalwar01, shalwar02, shalwar03, shalwar04, shalwar05, shalwar06, shalwar07, shalwar08],
+  "Abaya": [abaya01, abaya02, abaya03, abaya04, abaya05, abaya06, abaya07, abaya08],
+  "Shirt": [shirt01, shirt02, shirt03, shirt04, shirt05, shirt06, shirt07, shirt08],
+  "Jacket": [jacket01, jacket02, jacket03, jacket04, jacket05, jacket06, jacket07, jacket08],
+  "Pants": [pants01, pants02, pants03, pants04, pants05, pants06, pants07, pants08],
 };
 const gallery = Object.entries(galleryImages).flatMap(([category, images]) => images.map(image => ({ category, image })));
 const fabrics = [
@@ -339,8 +391,8 @@ function Home() {
               MAKE IT YOURS <ArrowUpRight size={16} />
             </Button>
           </div>
-          <div className="order-1 h-[340px] overflow-hidden md:order-2 md:h-full">
-            <img src={studio} alt="Inside a clothing design studio with garments in progress" loading="lazy" className="h-full w-full object-cover fashion-image" />
+          <div className="order-1 max-h-[650px] overflow-hidden md:order-2 md:h-full">
+            <img src={studio} alt="Inside a clothing design studio with garments in progress" loading="lazy" className="h-full object-[10%_25%] w-full object-cover fashion-image" />
           </div>
         </div>
       </section>
@@ -439,7 +491,7 @@ function Home() {
           </div>
           <div key={galleryTab} role="tabpanel" className="mt-10 grid auto-rows-[150px] grid-flow-dense grid-cols-2 gap-2 sm:auto-rows-[190px] md:auto-rows-[210px] md:grid-cols-4 md:gap-3">
             {galleryItems.map((item, i) => (
-              <figure key={item.image} className={`group relative overflow-hidden bg-muted animate-in fade-in zoom-in-95 duration-500 ${galleryLayouts[galleryCategories.indexOf(galleryTab) % 2][i]}`} style={{ animationDelay: `${i * 70}ms`, animationFillMode: "backwards" }}>
+              <figure key={item.image} className={`group relative overflow-hidden bg-muted animate-in fade-in zoom-in-95 duration-500 ${galleryLayouts[galleryCategories.indexOf(galleryTab) % galleryLayouts.length][i] || ""}`} style={{ animationDelay: `${i * 70}ms`, animationFillMode: "backwards" }}>
                 <img src={item.image} alt={`${item.category} look ${i + 1}`} loading="lazy" className="fashion-image h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/60 to-transparent p-4 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   <span className="text-[10px] uppercase tracking-[0.2em]">{item.category}</span>
