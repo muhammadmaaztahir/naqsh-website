@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Menu, UploadCloud, X } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Menu, ShoppingBag, Sparkles, UploadCloud, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Direct local image imports — bypassing broken Lovable CDN asset.json files
@@ -263,6 +263,15 @@ function Home() {
   };
 
   return <div className="overflow-x-hidden">
+    {/* ── TOP ANNOUNCEMENT BAR ─────────────────────────────────────── */}
+    <div className="bg-[#1A1A1A] py-2 px-4 text-center text-[11px] font-medium tracking-[.15em] text-[#E5D7B7] uppercase">
+      <span className="inline-flex items-center gap-2">
+        <Sparkles size={12} className="text-[#C09757]" />
+        Direct WhatsApp Ordering Concierge & Custom Sizing Available Across All Pieces
+        <Sparkles size={12} className="text-[#C09757]" />
+      </span>
+    </div>
+
     {/* ── NAV ─────────────────────────────────────────────────── */}
     <header className="sticky top-0 z-50 border-b border-border/40 bg-background/98 backdrop-blur-md">
       <div className="mx-auto flex h-[64px] max-w-[1440px] items-center justify-between gap-6 px-6 md:h-[80px] md:px-12 xl:px-16">
@@ -275,6 +284,9 @@ function Home() {
         </a>
 
         <nav className="hidden items-center gap-8 lg:flex xl:gap-8" aria-label="Main navigation">
+          <Link to="/shop" className="nav-link text-[12px] font-semibold tracking-[.1em] text-primary transition-colors hover:text-primary flex items-center gap-1.5">
+            <ShoppingBag size={13} /> SHOP
+          </Link>
           {nav.map(([name, id]) => <a key={id} href={`#${id}`} className="nav-link text-[12px] font-medium tracking-[.1em] text-foreground/80 transition-colors hover:text-primary">{name}</a>)}
         </nav>
 
@@ -287,6 +299,9 @@ function Home() {
       </div>
 
       {mobileMenu && <nav className="border-t border-border bg-background px-6 py-4 lg:hidden" aria-label="Mobile navigation">
+        <Link to="/shop" onClick={() => setMobileMenu(false)} className="flex items-center gap-2 border-b border-border/60 py-3 text-[12px] font-bold tracking-[.14em] text-primary">
+          <ShoppingBag size={14} /> SHOP COLLECTION
+        </Link>
         {nav.map(([name, id]) => <a key={id} href={`#${id}`} onClick={() => setMobileMenu(false)} className="block border-b border-border/60 py-3 text-[12px] font-medium tracking-[.14em]">{name}</a>)}
         <Button onClick={() => scrollTo("design")} className="mt-4 w-full rounded-[3px] h-11 text-[11px] font-bold tracking-[.14em] text-white bg-[#C09757] hover:bg-[#a88246]">START DESIGNING <ArrowUpRight size={14} className="ml-1" /></Button>
       </nav>}
