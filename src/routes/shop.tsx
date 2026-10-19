@@ -221,7 +221,7 @@ function ShopPage() {
       `Fabric: ${product.fabric}`,
       `Color: ${product.color}`,
       `Size: ${size}`,
-      `Price: PKR ${product.price.toLocaleString()}`,
+      `Price: $${product.price.toLocaleString()}`,
     ].join("\n");
 
     try {
@@ -480,7 +480,7 @@ function ShopPage() {
 
             {(selectedPricePreset !== "all" || priceRange[0] > 0 || priceRange[1] < PRICE_CAP) && (
               <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-[11px] font-medium text-primary">
-                Price: PKR {priceRange[0].toLocaleString()} - {priceRange[1].toLocaleString()}
+                Price: ${priceRange[0].toLocaleString()} - ${priceRange[1].toLocaleString()}
                 <button onClick={() => handlePricePreset("all")} className="cursor-pointer">
                   <X size={12} />
                 </button>
@@ -656,10 +656,10 @@ function ShopPage() {
               <div className="grid grid-cols-2 gap-1.5 mb-4">
                 {[
                   { label: "All Prices", id: "all" as PricePreset },
-                  { label: "< PKR 6,000", id: "under-6k" as PricePreset },
+                  { label: "< $6,000", id: "under-6k" as PricePreset },
                   { label: "6k - 10k", id: "6k-10k" as PricePreset },
                   { label: "10k - 14k", id: "10k-14k" as PricePreset },
-                  { label: "> PKR 14k", id: "above-14k" as PricePreset },
+                  { label: "> $14k", id: "above-14k" as PricePreset },
                 ].map((p) => (
                   <button
                     key={p.id}
@@ -676,7 +676,7 @@ function ShopPage() {
               </div>
 
               <div className="flex items-center justify-between text-[12px] font-bold text-primary mb-1">
-                <span>Max: PKR {Math.min(priceRange[1], maxCatalogPrice).toLocaleString()}</span>
+                <span>Max: ${Math.min(priceRange[1], maxCatalogPrice).toLocaleString()}</span>
               </div>
               <input
                 type="range"
@@ -691,8 +691,8 @@ function ShopPage() {
                 className="w-full accent-primary cursor-pointer"
               />
               <div className="mt-1 flex justify-between text-[11px] text-muted-foreground">
-                <span>PKR {minCatalogPrice.toLocaleString()}</span>
-                <span>PKR {maxCatalogPrice.toLocaleString()}</span>
+                <span>${minCatalogPrice.toLocaleString()}</span>
+                <span>${maxCatalogPrice.toLocaleString()}</span>
               </div>
             </div>
           </aside>
@@ -800,11 +800,11 @@ function ShopPage() {
                         {/* Price Area */}
                         <div className="mt-4 flex items-baseline gap-2.5">
                           <span className="text-[17px] font-bold text-foreground">
-                            PKR {product.price.toLocaleString()}
+                            ${product.price.toLocaleString()}
                           </span>
                           {product.originalPrice && (
                             <span className="text-[12.5px] text-muted-foreground line-through">
-                              PKR {product.originalPrice.toLocaleString()}
+                              ${product.originalPrice.toLocaleString()}
                             </span>
                           )}
                         </div>
@@ -901,11 +901,11 @@ function ShopPage() {
 
                 <div className="mt-4 flex items-baseline gap-3">
                   <span className="text-2xl font-bold text-foreground">
-                    PKR {quickViewProduct.price.toLocaleString()}
+                    ${quickViewProduct.price.toLocaleString()}
                   </span>
                   {quickViewProduct.originalPrice && (
                     <span className="text-sm text-muted-foreground line-through">
-                      PKR {quickViewProduct.originalPrice.toLocaleString()}
+                      ${quickViewProduct.originalPrice.toLocaleString()}
                     </span>
                   )}
                 </div>
@@ -1084,7 +1084,7 @@ function ShopPage() {
               <div>
                 <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider text-foreground/70 mb-2">
                   <span>Max Price</span>
-                  <span className="text-primary font-bold">PKR {Math.min(priceRange[1], maxCatalogPrice).toLocaleString()}</span>
+                  <span className="text-primary font-bold">${Math.min(priceRange[1], maxCatalogPrice).toLocaleString()}</span>
                 </div>
                 <input
                   type="range"

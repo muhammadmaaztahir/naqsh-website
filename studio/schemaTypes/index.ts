@@ -88,13 +88,13 @@ export const product = defineType({
     }),
     defineField({
       name: "price",
-      title: "Price (PKR)",
+      title: "Price ($ USD)",
       type: "number",
       validation: (r) => r.required().min(0),
     }),
     defineField({
       name: "originalPrice",
-      title: "Original price (PKR) — for strike-through discount",
+      title: "Original price ($ USD) — for strike-through discount",
       type: "number",
       validation: (r) => r.min(0),
     }),

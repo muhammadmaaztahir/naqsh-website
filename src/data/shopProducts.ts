@@ -47,7 +47,7 @@ export interface ShopProduct {
   fabric: string;
   color: string;
   colorHex: string;
-  price: number; // in PKR (dummy price)
+  price: number; // in USD
   originalPrice?: number;
   image: string;
   description: string;
@@ -704,7 +704,7 @@ export function createWhatsAppProductUrl(product: ShopProduct, selectedSize?: st
     `🧵 *Fabric:* ${product.fabric}`,
     `🎨 *Color:* ${product.color}`,
     `📏 *Selected Size:* ${chosenSize}`,
-    `💰 *Price:* PKR ${product.price.toLocaleString()}`,
+    `💰 *Price:* $${product.price.toLocaleString()}`,
     imageRef ? `🖼️ *Image Ref:* ${imageRef}` : "",
     customNote ? `📝 *Special Request:* ${customNote}` : "",
     `━━━━━━━━━━━━━━━━━━━━━━`,
