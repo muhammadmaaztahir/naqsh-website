@@ -21,7 +21,7 @@ Sanity Studio where the client manages products, brands, categories, fabrics and
    ```powershell
    $env:SANITY_STUDIO_PROJECT_ID="your_project_id"; $env:SANITY_WRITE_TOKEN="sk..."; npm run seed
    ```
-6. In the website root `.env` (and in your hosting/Lovable env vars):
+6. In the website root `.env` (and in your Vercel / hosting env vars):
    ```
    VITE_SANITY_PROJECT_ID=your_project_id
    VITE_SANITY_DATASET=production

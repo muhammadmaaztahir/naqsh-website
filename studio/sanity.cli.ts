@@ -6,4 +6,5 @@ const dataset = process.env.SANITY_STUDIO_DATASET || "production";
 export default defineCliConfig({
   api: { projectId, dataset },
   studioHost: "naqsh-admin", // → https://naqsh-admin.sanity.studio (change if taken)
+  deployment: { appId: "l0tgjsowwo75kroel33eltuc" },
 });

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Menu, ShoppingBag, Sparkles, UploadCloud, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Direct local image imports — bypassing broken Lovable CDN asset.json files
+// Direct local image imports
 import heroImg from "@/assets/Images/New Images/3PELXS26V737_1.webp";
 import studio from "@/assets/Images/New Images/Cardinal_Gem_01.jpg.webp";
 import detail from "@/assets/Images/IMG_1203.jpeg";
