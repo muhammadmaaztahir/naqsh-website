@@ -1,0 +1,24 @@
+{
+  "name": "naqsh-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "seed": "sanity exec scripts/seed.mjs --with-user-token"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.29.0",
+    "@sanity/vision": "^4.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "sanity": "^4.0.0",
+    "styled-components": "^6.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

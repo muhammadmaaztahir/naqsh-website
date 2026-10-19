@@ -42,16 +42,16 @@ export interface ShopProduct {
   id: string;
   sku: string;
   title: string;
-  brand: "J." | "Sapphire" | "Naqsh Atelier";
-  category: "Abaya" | "Kurta" | "3-Piece Suit" | "2-Piece Suit" | "Luxury Pret";
-  fabric: "Lawn" | "Raw Silk" | "Cotton" | "Khaddar" | "Chiffon" | "Viscose" | "Jacquard" | "Zari Lawn" | "Crepe";
+  brand: string;
+  category: string;
+  fabric: string;
   color: string;
   colorHex: string;
   price: number; // in PKR (dummy price)
   originalPrice?: number;
   image: string;
   description: string;
-  tag?: "Bestseller" | "New Arrival" | "Festive" | "Limited";
+  tag?: string | null;
   inStock: boolean;
   sizes: string[];
 }

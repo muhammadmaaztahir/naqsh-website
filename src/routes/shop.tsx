@@ -18,15 +18,11 @@ import {
   ZoomIn,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  SHOP_PRODUCTS,
-  BRANDS,
-  CATEGORIES,
-  FABRICS,
-  COLORS,
-  createWhatsAppProductUrl,
-  type ShopProduct,
-} from "@/data/shopProducts";
+import { createWhatsAppProductUrl, type ShopProduct } from "@/data/shopProducts";
+import { useCatalog } from "@/hooks/useCatalog";
+
+// Upper bound for the price filter (the CMS may contain products of any price).
+const PRICE_CAP = 10_000_000;
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -52,6 +48,16 @@ type SortOption = "featured" | "price-asc" | "price-desc" | "newest" | "name-asc
 type PricePreset = "all" | "under-6k" | "6k-10k" | "10k-14k" | "above-14k";
 
 function ShopPage() {
+  // Catalog data (managed from the CMS dashboard)
+  const { catalog, isLoading } = useCatalog();
+  const {
+    products: SHOP_PRODUCTS,
+    brands: BRANDS,
+    categories: CATEGORIES,
+    fabrics: FABRICS,
+    colors: COLORS,
+  } = catalog;
+
   // Filters state
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<string>("All Brands");
@@ -59,7 +65,7 @@ function ShopPage() {
   const [selectedFabric, setSelectedFabric] = useState<string>("All Fabrics");
   const [selectedColor, setSelectedColor] = useState<string>("All Colors");
   const [selectedPricePreset, setSelectedPricePreset] = useState<PricePreset>("all");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 20000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, PRICE_CAP]);
   const [selectedTag, setSelectedTag] = useState<string>("All");
   const [sortBy, setSortBy] = useState<SortOption>("featured");
 
@@ -82,18 +88,18 @@ function ShopPage() {
   ];
 
   // Min & max prices in catalog
-  const catalogPrices = useMemo(() => SHOP_PRODUCTS.map((p) => p.price), []);
-  const minCatalogPrice = Math.min(...catalogPrices);
-  const maxCatalogPrice = Math.max(...catalogPrices);
+  const catalogPrices = useMemo(() => SHOP_PRODUCTS.map((p) => p.price), [SHOP_PRODUCTS]);
+  const minCatalogPrice = catalogPrices.length ? Math.min(...catalogPrices) : 0;
+  const maxCatalogPrice = catalogPrices.length ? Math.max(...catalogPrices) : 20000;
 
   // Price presets handler
   const handlePricePreset = (preset: PricePreset) => {
     setSelectedPricePreset(preset);
-    if (preset === "all") setPriceRange([0, 20000]);
+    if (preset === "all") setPriceRange([0, PRICE_CAP]);
     else if (preset === "under-6k") setPriceRange([0, 6000]);
     else if (preset === "6k-10k") setPriceRange([6000, 10000]);
     else if (preset === "10k-14k") setPriceRange([10000, 14000]);
-    else if (preset === "above-14k") setPriceRange([14000, 25000]);
+    else if (preset === "above-14k") setPriceRange([14000, PRICE_CAP]);
   };
 
   // Filtered and sorted products
@@ -171,7 +177,7 @@ function ShopPage() {
       }
       return 0;
     });
-  }, [searchQuery, selectedBrand, selectedCategory, selectedFabric, selectedColor, selectedTag, priceRange, sortBy]);
+  }, [SHOP_PRODUCTS, searchQuery, selectedBrand, selectedCategory, selectedFabric, selectedColor, selectedTag, priceRange, sortBy]);
 
   // Active filters count
   const activeFilterCount = useMemo(() => {
@@ -181,7 +187,7 @@ function ShopPage() {
     if (selectedFabric !== "All Fabrics") count++;
     if (selectedColor !== "All Colors") count++;
     if (selectedTag !== "All") count++;
-    if (selectedPricePreset !== "all" || priceRange[0] > 0 || priceRange[1] < 20000) count++;
+    if (selectedPricePreset !== "all" || priceRange[0] > 0 || priceRange[1] < PRICE_CAP) count++;
     if (searchQuery.trim()) count++;
     return count;
   }, [selectedBrand, selectedCategory, selectedFabric, selectedColor, selectedTag, selectedPricePreset, priceRange, searchQuery]);
@@ -194,7 +200,7 @@ function ShopPage() {
     setSelectedColor("All Colors");
     setSelectedTag("All");
     setSelectedPricePreset("all");
-    setPriceRange([0, 20000]);
+    setPriceRange([0, PRICE_CAP]);
     setSortBy("featured");
   };
 
@@ -472,7 +478,7 @@ function ShopPage() {
               </span>
             )}
 
-            {(selectedPricePreset !== "all" || priceRange[0] > 0 || priceRange[1] < 20000) && (
+            {(selectedPricePreset !== "all" || priceRange[0] > 0 || priceRange[1] < PRICE_CAP) && (
               <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-[11px] font-medium text-primary">
                 Price: PKR {priceRange[0].toLocaleString()} - {priceRange[1].toLocaleString()}
                 <button onClick={() => handlePricePreset("all")} className="cursor-pointer">
@@ -670,7 +676,7 @@ function ShopPage() {
               </div>
 
               <div className="flex items-center justify-between text-[12px] font-bold text-primary mb-1">
-                <span>Max: PKR {priceRange[1].toLocaleString()}</span>
+                <span>Max: PKR {Math.min(priceRange[1], maxCatalogPrice).toLocaleString()}</span>
               </div>
               <input
                 type="range"
@@ -693,7 +699,11 @@ function ShopPage() {
 
           {/* ── PRODUCTS CATALOG GRID ──────────────────────────────── */}
           <div>
-            {filteredProducts.length === 0 ? (
+            {isLoading ? (
+              <div className="rounded-xl border border-dashed border-border p-12 text-center bg-card/30 text-[13px] text-muted-foreground">
+                Loading collection…
+              </div>
+            ) : filteredProducts.length === 0 ? (
               <div className="rounded-xl border border-dashed border-border p-12 text-center bg-card/30">
                 <ShoppingBag className="mx-auto text-muted-foreground/50 mb-3" size={48} />
                 <h3 className="display text-xl text-foreground font-medium">No Matching Pieces Found</h3>
@@ -923,7 +933,11 @@ function ShopPage() {
                   </div>
                   <div>
                     <span className="font-semibold text-foreground/60 block text-[10.5px] uppercase tracking-wider">Availability</span>
-                    <span className="font-medium text-emerald-600">In Stock Ready</span>
+                    {quickViewProduct.inStock ? (
+                      <span className="font-medium text-emerald-600">In Stock Ready</span>
+                    ) : (
+                      <span className="font-medium text-destructive">Out of Stock — ask on WhatsApp</span>
+                    )}
                   </div>
                 </div>
 
@@ -1070,7 +1084,7 @@ function ShopPage() {
               <div>
                 <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider text-foreground/70 mb-2">
                   <span>Max Price</span>
-                  <span className="text-primary font-bold">PKR {priceRange[1].toLocaleString()}</span>
+                  <span className="text-primary font-bold">PKR {Math.min(priceRange[1], maxCatalogPrice).toLocaleString()}</span>
                 </div>
                 <input
                   type="range"
