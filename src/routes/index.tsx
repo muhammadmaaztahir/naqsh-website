@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Menu, ShoppingBag, Sparkles, UploadCloud, X } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Crown, Heart, Menu, Palette, ShoppingBag, Sparkles, UploadCloud, Wallet, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Direct local image imports
@@ -158,6 +158,33 @@ const process = [
   ["02", "Shape the details", "Bring together fabrics, colors, finishing touches and your perfect fit."],
   ["03", "Share your vision", "Keep your selections together and share your idea with Naqsh."],
 ];
+const brandPromises = [
+  {
+    title: "Made for your body",
+    desc: "No pressure to fit standard sizes.",
+    icon: Heart,
+  },
+  {
+    title: "Designed by you",
+    desc: "Choose your colors, fabrics, designs, and details.",
+    icon: Palette,
+  },
+  {
+    title: "Comfort meets elegance",
+    desc: "Clothing that feels as good as it looks.",
+    icon: Sparkles,
+  },
+  {
+    title: "Made with your budget in mind",
+    desc: "We work with you to explore suitable options.",
+    icon: Wallet,
+  },
+  {
+    title: "Beauty at every age",
+    desc: "Your age should never limit your style.",
+    icon: Crown,
+  },
+];
 const atelierStats = [
   { value: "500+", label: "Pieces crafted" },
   { value: "100%", label: "Made to order" },
@@ -255,7 +282,7 @@ function Home() {
     } catch { setSendStatus("error"); }
     setSending(false);
   };
-  const nav = [["HOW IT WORKS", "process"], ["THE ATELIER", "atelier"], ["GALLERY", "gallery"], ["DESIGN STUDIO", "design"]];
+  const nav = [["HOW IT WORKS", "process"], ["OUR PHILOSOPHY", "philosophy"], ["THE ATELIER", "atelier"], ["GALLERY", "gallery"], ["DESIGN STUDIO", "design"]];
 
   const goToHero = (index: number) => {
     setPrevHeroIndex(heroIndex);
@@ -385,6 +412,146 @@ function Home() {
               <p className="mt-3 text-[13px] leading-7 text-muted-foreground">{text}</p>
             </div>)}
           </div>
+        </div>
+      </section>
+
+      {/* ── OUR PHILOSOPHY ────────────────────────────────────── */}
+      <section id="philosophy" className="scroll-mt-20 border-y border-border/60 bg-card/40 py-20 md:py-28">
+        <div className="mx-auto max-w-[1280px] px-6 md:px-12 xl:px-16">
+
+          {/* Section Header */}
+          <div className="max-w-3xl">
+            <p className="eyebrow">OUR PHILOSOPHY — NAQSH</p>
+            <h2 className="section-title mt-4 text-3xl md:text-5xl font-normal leading-[1.12]">
+              Every Woman Deserves<br />
+              <em>Clothes Made for Her.</em>
+            </h2>
+            <p className="mt-5 text-base md:text-lg font-medium text-foreground/90 leading-relaxed italic border-l-2 border-primary pl-4">
+              “At NAQSH, we believe that beauty has no age limit, and style should never be restricted by a size.”
+            </p>
+          </div>
+
+          {/* Story & Visual Grid */}
+          <div className="mt-14 grid gap-12 lg:grid-cols-12 lg:gap-16 items-start">
+
+            {/* Left Story Column (7 cols) */}
+            <div className="space-y-6 lg:col-span-7 text-[14px] md:text-[15px] leading-[1.85] text-muted-foreground">
+              <p>
+                As women grow older, their bodies change, their needs evolve, and their comfort becomes even more important. Yet, finding clothes that fit beautifully, feel comfortable, and reflect their personal style can become increasingly difficult—especially when most clothing brands offer only standard sizes such as Small, Medium, Large, and Extra Large.
+              </p>
+
+              <p className="display text-xl md:text-2xl font-medium text-foreground italic">
+                That is why NAQSH was created.
+              </p>
+
+              <p>
+                Our mission is to bring the beauty of customized clothing to women who deserve something more personal than off-the-rack fashion. We create clothing around you—your measurements, your preferred fabrics, your favorite colors, your unique designs, and your individual style.
+              </p>
+
+              <p>
+                Whether you have a picture of a dress you love, a special design in mind, or simply an idea of what makes you feel beautiful, we will work with you to bring that vision to life.
+              </p>
+
+              <p>
+                We understand that every woman has different needs and budgets. That is why we believe beautiful clothing should not have to come with an impossible price tag. We will do our best to work within your budget while creating something that feels uniquely yours.
+              </p>
+
+              {/* Callout Box */}
+              <div className="mt-8 rounded-sm border-l-2 border-primary bg-card p-6 md:p-7 shadow-sm">
+                <p className="display text-lg md:text-xl text-foreground font-normal leading-snug">
+                  “At NAQSH, you are not expected to fit into a dress. The dress is made to fit you.”
+                </p>
+                <p className="mt-3 text-[13px] text-muted-foreground leading-relaxed">
+                  Because you deserve clothing that fits your body, suits your personality, honors your individuality, and makes you feel beautiful.
+                </p>
+                <p className="mt-4 text-[11px] font-bold tracking-[.18em] text-primary uppercase">
+                  Your body. Your style. Your measurements. Your NAQSH.
+                </p>
+              </div>
+
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <Button onClick={() => scrollTo("design")} className="h-11 rounded-sm px-7 text-[11px] font-bold tracking-[.12em] text-white bg-primary hover:bg-primary/90">
+                  START DESIGNING <ArrowUpRight size={14} className="ml-1" />
+                </Button>
+                <Button onClick={() => scrollTo("process")} variant="outline" className="h-11 rounded-sm border-border px-6 text-[11px] font-bold tracking-[.12em]">
+                  SEE HOW IT WORKS
+                </Button>
+              </div>
+            </div>
+
+            {/* Right Visual Card (5 cols) */}
+            <div className="relative lg:col-span-5">
+              <div className="relative mx-auto max-w-md overflow-hidden rounded-sm border border-border shadow-2xl lg:max-w-none">
+                <img
+                  src={shalwar02}
+                  alt="Custom bespoke tailoring detail and embroidery"
+                  loading="lazy"
+                  decoding="async"
+                  className="fashion-image aspect-[3/4] w-full object-cover object-top"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-8">
+                  <span className="text-[10px] font-bold tracking-[.25em] text-[#C09757] uppercase">
+                    OUR FAVORITE TAGLINE
+                  </span>
+                  <p className="display mt-2 text-xl font-normal leading-snug sm:text-2xl text-white">
+                    “Don’t fit into the clothes. Let the clothes fit you.”
+                  </p>
+                  <p className="mt-3 text-xs text-white/80 leading-relaxed">
+                    Personalized clothing, dignity, comfort, and confidence for every woman.
+                  </p>
+                  <div className="mt-4 pt-4 border-t border-white/20 flex items-center justify-between">
+                    <span className="text-[11px] font-semibold text-[#E5D7B7] tracking-wider italic">
+                      Nothing is impossible when we create together.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ── OUR BRAND PROMISE ──────────────────────────────── */}
+          <div className="mt-20 border-t border-border/80 pt-16">
+            <div className="text-center">
+              <p className="eyebrow">OUR BRAND PROMISE</p>
+              <h3 className="section-title mt-3 text-2xl md:text-4xl">
+                Five promises crafted into <em>every garment.</em>
+              </h3>
+              <p className="mx-auto mt-3 max-w-xl text-[13px] text-muted-foreground">
+                Dignity, comfort, and personalized craftsmanship at the center of everything we do.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+              {brandPromises.map((item, idx) => {
+                const IconComponent = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="group relative flex flex-col justify-between rounded-sm border border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:shadow-lg"
+                  >
+                    <div>
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                        <IconComponent size={20} />
+                      </div>
+                      <span className="mt-4 block text-[10px] font-bold tracking-[.2em] text-muted-foreground uppercase">
+                        0{idx + 1}
+                      </span>
+                      <h4 className="display mt-2 text-lg text-foreground font-medium">
+                        {item.title}
+                      </h4>
+                      <p className="mt-2.5 text-[12px] leading-relaxed text-muted-foreground">
+                        {item.desc}
+                      </p>
+                    </div>
+                    <div className="mt-5 h-0.5 w-8 bg-primary/40 transition-all duration-300 group-hover:w-full group-hover:bg-primary" />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -543,7 +710,10 @@ function Home() {
               <span className="text-[8px] font-semibold tracking-[.16em] text-muted-foreground">CUSTOMIZE CLOTHING</span>
             </span>
           </a>
-          <p className="mt-4 max-w-[280px] text-[12px] leading-6 text-muted-foreground">You design it. We make it. Every piece is crafted exactly to your vision, from fabric to finishing.</p>
+          <p className="mt-4 max-w-[320px] text-[12px] leading-6 text-muted-foreground">
+            <span className="mb-1 block font-semibold text-foreground/90">“Don’t fit into the clothes. Let the clothes fit you.”</span>
+            Personalized clothing, dignity, comfort, and confidence for every woman.
+          </p>
           {/* Social */}
           <div className="mt-5 flex items-center gap-3">
             <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Naqsh on Facebook" className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground/60 transition-colors hover:border-primary hover:text-primary">
