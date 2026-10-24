@@ -21,8 +21,8 @@ import { Button } from "@/components/ui/button";
 import { createWhatsAppProductUrl, type ShopProduct } from "@/data/shopProducts";
 import { useCatalog } from "@/hooks/useCatalog";
 
-// Upper bound for the price filter (the CMS may contain products of any price).
-const PRICE_CAP = 10_000_000;
+// Upper bound for the price filter (capped at $500 max per user requirement).
+const PRICE_CAP = 500;
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -45,7 +45,7 @@ export const Route = createFileRoute("/shop")({
 });
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest" | "name-asc";
-type PricePreset = "all" | "under-6k" | "6k-10k" | "10k-14k" | "above-14k";
+type PricePreset = "all" | "under-60" | "60-100" | "100-150" | "150-500";
 
 function ShopPage() {
   // Catalog data (managed from the CMS dashboard)
@@ -90,16 +90,16 @@ function ShopPage() {
   // Min & max prices in catalog
   const catalogPrices = useMemo(() => SHOP_PRODUCTS.map((p) => p.price), [SHOP_PRODUCTS]);
   const minCatalogPrice = catalogPrices.length ? Math.min(...catalogPrices) : 0;
-  const maxCatalogPrice = catalogPrices.length ? Math.max(...catalogPrices) : 20000;
+  const maxCatalogPrice = PRICE_CAP;
 
-  // Price presets handler
+  // Price presets handler (USD brackets tailored to Sanity products, max capped at $500)
   const handlePricePreset = (preset: PricePreset) => {
     setSelectedPricePreset(preset);
     if (preset === "all") setPriceRange([0, PRICE_CAP]);
-    else if (preset === "under-6k") setPriceRange([0, 6000]);
-    else if (preset === "6k-10k") setPriceRange([6000, 10000]);
-    else if (preset === "10k-14k") setPriceRange([10000, 14000]);
-    else if (preset === "above-14k") setPriceRange([14000, PRICE_CAP]);
+    else if (preset === "under-60") setPriceRange([0, 60]);
+    else if (preset === "60-100") setPriceRange([60, 100]);
+    else if (preset === "100-150") setPriceRange([100, 150]);
+    else if (preset === "150-500") setPriceRange([150, PRICE_CAP]);
   };
 
   // Filtered and sorted products
@@ -480,7 +480,7 @@ function ShopPage() {
 
             {(selectedPricePreset !== "all" || priceRange[0] > 0 || priceRange[1] < PRICE_CAP) && (
               <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-[11px] font-medium text-primary">
-                Price: ${priceRange[0].toLocaleString()} - ${priceRange[1].toLocaleString()}
+                Price: {priceRange[0] > 0 ? `$${priceRange[0]} - $${priceRange[1]}` : `Up to $${priceRange[1]}`}
                 <button onClick={() => handlePricePreset("all")} className="cursor-pointer">
                   <X size={12} />
                 </button>
@@ -656,10 +656,10 @@ function ShopPage() {
               <div className="grid grid-cols-2 gap-1.5 mb-4">
                 {[
                   { label: "All Prices", id: "all" as PricePreset },
-                  { label: "< $6,000", id: "under-6k" as PricePreset },
-                  { label: "6k - 10k", id: "6k-10k" as PricePreset },
-                  { label: "10k - 14k", id: "10k-14k" as PricePreset },
-                  { label: "> $14k", id: "above-14k" as PricePreset },
+                  { label: "< $60", id: "under-60" as PricePreset },
+                  { label: "$60 - $100", id: "60-100" as PricePreset },
+                  { label: "$100 - $150", id: "100-150" as PricePreset },
+                  { label: "$150 - $500", id: "150-500" as PricePreset },
                 ].map((p) => (
                   <button
                     key={p.id}
@@ -676,23 +676,23 @@ function ShopPage() {
               </div>
 
               <div className="flex items-center justify-between text-[12px] font-bold text-primary mb-1">
-                <span>Max: ${Math.min(priceRange[1], maxCatalogPrice).toLocaleString()}</span>
+                <span>Max: ${Math.min(priceRange[1], PRICE_CAP).toLocaleString()}</span>
               </div>
               <input
                 type="range"
-                min={minCatalogPrice}
-                max={maxCatalogPrice}
-                step={500}
-                value={priceRange[1]}
+                min={0}
+                max={PRICE_CAP}
+                step={5}
+                value={Math.min(priceRange[1], PRICE_CAP)}
                 onChange={(e) => {
                   setSelectedPricePreset("all");
-                  setPriceRange([priceRange[0], Number(e.target.value)]);
+                  setPriceRange([0, Number(e.target.value)]);
                 }}
                 className="w-full accent-primary cursor-pointer"
               />
               <div className="mt-1 flex justify-between text-[11px] text-muted-foreground">
-                <span>${minCatalogPrice.toLocaleString()}</span>
-                <span>${maxCatalogPrice.toLocaleString()}</span>
+                <span>$0</span>
+                <span>${PRICE_CAP.toLocaleString()}</span>
               </div>
             </div>
           </aside>
@@ -1081,23 +1081,54 @@ function ShopPage() {
               </div>
 
               {/* Max Price */}
-              <div>
+              <div className="pb-2">
+                <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider text-foreground/70 mb-2">
+                  <span>Price Range</span>
+                </div>
+
+                {/* Mobile Quick Presets */}
+                <div className="grid grid-cols-2 gap-1.5 mb-3">
+                  {[
+                    { label: "All Prices", id: "all" as PricePreset },
+                    { label: "< $60", id: "under-60" as PricePreset },
+                    { label: "$60 - $100", id: "60-100" as PricePreset },
+                    { label: "$100 - $150", id: "100-150" as PricePreset },
+                    { label: "$150 - $500", id: "150-500" as PricePreset },
+                  ].map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => handlePricePreset(p.id)}
+                      className={`rounded px-2 py-1 text-[11px] transition-colors cursor-pointer ${
+                        selectedPricePreset === p.id
+                          ? "bg-[#C09757] text-white font-semibold"
+                          : "bg-card text-foreground/70 hover:bg-accent"
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+
                 <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider text-foreground/70 mb-2">
                   <span>Max Price</span>
-                  <span className="text-primary font-bold">${Math.min(priceRange[1], maxCatalogPrice).toLocaleString()}</span>
+                  <span className="text-primary font-bold">${Math.min(priceRange[1], PRICE_CAP).toLocaleString()}</span>
                 </div>
                 <input
                   type="range"
-                  min={minCatalogPrice}
-                  max={maxCatalogPrice}
-                  step={500}
-                  value={priceRange[1]}
+                  min={0}
+                  max={PRICE_CAP}
+                  step={5}
+                  value={Math.min(priceRange[1], PRICE_CAP)}
                   onChange={(e) => {
                     setSelectedPricePreset("all");
-                    setPriceRange([priceRange[0], Number(e.target.value)]);
+                    setPriceRange([0, Number(e.target.value)]);
                   }}
                   className="w-full accent-primary cursor-pointer"
                 />
+                <div className="mt-1 flex justify-between text-[11px] text-muted-foreground">
+                  <span>$0</span>
+                  <span>${PRICE_CAP.toLocaleString()}</span>
+                </div>
               </div>
             </div>
 

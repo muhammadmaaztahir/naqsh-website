@@ -47,6 +47,22 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const reqUrl = new URL(request.url);
+      if (reqUrl.pathname.startsWith("/_sanity/")) {
+        const targetPath = reqUrl.pathname.replace(/^\/_sanity/, "");
+        const projectId = (process.env.VITE_SANITY_PROJECT_ID || "plllrhrs").trim();
+        const sanityUrl = `https://${projectId}.apicdn.sanity.io${targetPath}${reqUrl.search}`;
+        const res = await fetch(sanityUrl);
+        const data = await res.arrayBuffer();
+        return new Response(data, {
+          status: res.status,
+          headers: {
+            "content-type": res.headers.get("content-type") || "application/json",
+            "access-control-allow-origin": "*",
+          },
+        });
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
